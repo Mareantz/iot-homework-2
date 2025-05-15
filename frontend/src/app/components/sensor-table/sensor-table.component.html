@@ -1,0 +1,17 @@
+<h2>Ultimele date primite</h2>
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Senzor</th>
+      <th>Stare</th>
+      <th>Ora</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of data">
+      <td>{{ row.sensor }}</td>
+      <td>{{ row.state }}</td>
+      <td>{{ row.timestamp | date:'medium' }}</td>
+    </tr>
+  </tbody>
+</table>
