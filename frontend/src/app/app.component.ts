@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { SensorTableComponent } from './components/sensor-table/sensor-table.component';
+import { MotionSensorComponent } from './components/motion-sensor/motion-sensor.component';
 
 @Component({
   selector: 'app-root',
-  imports: [SensorTableComponent],
+  imports: [MotionSensorComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

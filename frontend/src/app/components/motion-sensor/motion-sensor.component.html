@@ -1,0 +1,89 @@
+<div class="container">
+    <h1>Ultrasonic Motion Sensor Simulator</h1>
+
+    <div class="sensor-container">
+        <div class="canvas-container">
+            <canvas #sensorCanvas [width]="canvasWidth" [height]="canvasHeight" class="sensor-canvas"></canvas>
+            <div class="canvas-instructions">
+                <div class="instruction-item">
+                    <span class="instruction-icon">🖱️</span>
+                    <span>Drag the blue dot to move the object</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <h2>Controls & Data</h2>
+
+            <div class="control-group">
+                <label for="distance-slider">Object distance (cm):</label>
+                <div class="slider-container">
+                    <input type="range" id="distance-slider" min="0" max="300" step="1" [value]="distance"
+                        (input)="onDistanceChange($event)">
+                </div>
+                <div class="distance-value">{{ distance }} cm</div>
+            </div>
+
+            <div class="button-group">
+                <button class="move-btn" (click)="moveCloser()">
+                    <span class="arrow">←</span> Move Closer
+                </button>
+                <button class="move-btn" (click)="moveAway()">
+                    Move Away <span class="arrow">→</span>
+                </button>
+            </div>
+
+            <div class="button-group">
+                <button class="auto-move-btn" [class.active]="isAutoMoving" (click)="toggleAutoMove()">
+                    {{ isAutoMoving ? 'Stop Auto Movement' : 'Start Auto Movement' }}
+                </button>
+            </div>
+
+            <div class="status-display"
+                [ngClass]="{'status-danger': status === 'INTRUDER', 'status-safe': status === 'SAFE'}">
+                <div class="status-indicator"></div>
+                <div class="status-text">{{status}}</div>
+            </div>
+
+            <div class="log-container">
+                <div class="log-header">
+                    <h3>Sensor Data Log:</h3>
+                    <button class="save-logs-btn" (click)="saveLogsLocally()">
+                        <span class="save-icon">💾</span> Save Locally
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Distance (cm)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let entry of dataLog">
+                                <td>{{ entry.time }}</td>
+                                <td>{{ entry.distance }}</td>
+                                <td
+                                    [ngClass]="{'text-danger': entry.status === 'INTRUDER', 'text-safe': entry.status === 'SAFE'}">
+                                    {{ entry.status }}
+                                </td>
+                            </tr>
+                            <tr *ngIf="dataLog.length === 0">
+                                <td colspan="3" class="no-data">No data logged yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button class="send-data-btn" (click)="sendData()">Send Data to Server</button>
+        </div>
+    </div>
+
+    <div class="server-response" *ngIf="serverResponse">
+        <h3>Server Response</h3>
+        <pre>{{serverResponse | json}}</pre>
+    </div>
+</div>
